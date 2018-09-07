@@ -1,0 +1,84 @@
+<!-- add article-->
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title ">Article</h4>
+      <p class="card-category"> Create New Article</p>
+    </div>
+    <div class="card-body">
+      <div *ngIf="showFormAdd">
+        <form [formGroup]="createForm" (ngSubmit)="AddArticle(createForm)">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="bmd-label-floating">Name</label>
+                <input formControlName="name" type="text" class="form-control" value="">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="bmd-label-floating">Description</label>
+                <editor apiKey="test" formControlName="description"></editor>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="bmd-label-floating">Categories</label>
+                <select class="form-control" (click)="changeSelect($event.target.value)" formControlName="category">
+                  <option value={{cat._id}} *ngFor="let cat of cats; let i = index">{{cat.type}} </option>
+
+                </select>
+                <button type="reset" class="btn btn-outline-dark" (click)="showFormCat = !showFormCat">+</button>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div *ngIf="showFormCat">
+            <form [formGroup]="createCategoryForm" (ngSubmit)="AddCategory(createCategoryForm)">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Categories</label>
+                    <input type="text" formControlName="type" class="form-control" value="" placeholder="Category's Type">
+                    <button type="Submit" class="btn btn-primary pull-right">Save</button>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+
+
+          <button [disabled]="createForm.invalid" type="submit" class="btn btn-primary pull-right">Save</button>
+          <div class="clearfix"></div>
+        </form>
+
+      </div>
+
+      <div *ngIf="showUploadImg">
+        <input type="file" name="photo" (change)="handlefileChange($event.target.files)" />
+
+        <button type="button" class="btn btn-success btn-s">
+          Upload an Image
+        </button>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

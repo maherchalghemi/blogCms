@@ -1,0 +1,93 @@
+<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+  <div class="panel panel-info">
+
+    <div class="panel-heading">
+      <div class="panel-title">
+        <h2>Add Article</h2>
+      </div>
+
+    </div>
+
+    <div style="padding-top:30px" class="panel-body" >
+
+      <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+<div *ngIf="showFormAdd">
+      <form [formGroup]="createForm" (ngSubmit)="AddArticle(createForm)" class="form-horizontal" role="form">
+
+        <div style="margin-bottom: 25px" class="input-group">
+          <span class="input-group-addon">
+            <i class="glyphicon glyphicon-user"></i>
+          </span>
+          <input formControlName="name" type="text" class="form-control" value="" placeholder="Name">
+
+        </div>
+
+
+        <editor apiKey="test" [init]="{plugins: 'link'}" formControlName="description"></editor>
+
+        
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="bmd-label-floating">Categories</label>
+              <select class="form-control" (click)="changeSelect($event.target.value)" formControlName="category">
+                <option value={{cat._id}} *ngFor="let cat of cats; let i = index">{{cat.type}} </option>
+
+              </select>
+              <button type="reset" class="btn btn-outline-dark" (click)="showFormCat = !showFormCat">+</button>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div *ngIf="showFormCat">
+          <form [formGroup]="createCategoryForm" (ngSubmit)="AddCategory(createCategoryForm)">
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Categories</label>
+                  <input type="text" formControlName="type" class="form-control" value="" placeholder="Category's Type">
+                  <button type="Submit" class="btn btn-primary pull-right">Save</button>
+                </div>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+
+
+
+        <div style="margin-top:10px" class="form-group">
+          <!-- Button -->
+
+          <div class="col-sm-12 controls">
+            <button [disabled]="createForm.invalid" type="submit" class="btn btn-success">Create </button>
+
+
+          </div>
+        </div>
+
+
+
+      </form>
+    </div>
+
+
+    </div>
+
+    <div *ngIf="showUploadImg">
+      <input type="file" name="photo" (change)="handlefileChange($event.target.files)" />
+
+        <button type="button" class="btn btn-success btn-s" >
+          Upload an Image
+        </button>
+    </div>
+  </div>
+</div>

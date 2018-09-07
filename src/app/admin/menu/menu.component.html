@@ -1,0 +1,60 @@
+<div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
+  <!--
+    Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+    Tip 2: you can also add an image using data-image tag
+-->
+  <div class="logo">
+    <a routerLink="/admin/home" class="simple-text logo-normal">
+      5 POINTS BLOG
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      <li class="nav-item  ">
+        <a class="nav-link" href="./dashboard.html">
+          <i class="material-icons">dashboard</i>
+          <p>Home</p>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/admin/listAdmin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="material-icons">person</i>
+          <p>Administrators</p>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/admin/addAdmin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="material-icons">person</i>
+          <p>Create</p>
+        </a>
+      </li>
+     
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/admin/listArticle" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="material-icons">library_books</i>
+          <p>Articles</p>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/admin/addarticle" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="material-icons">library_books</i>
+          <p>Create</p>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/admin/listCategory" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="material-icons">category</i>
+          <p>Categories</p>
+        </a>
+      </li>
+     
+      <!-- <li class="nav-item active-pro ">
+            <a class="nav-link" href="./upgrade.html">
+                <i class="material-icons">unarchive</i>
+                <p>Upgrade to PRO</p>
+            </a>
+        </li> -->
+    </ul>
+  </div>
+</div>

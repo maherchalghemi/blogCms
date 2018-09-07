@@ -1,0 +1,243 @@
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card" style="width: 24rem;">
+
+      <div class="card-body">
+        <h5 class="card-title">My Profile</h5>
+        <div class="row">
+          <div class="col-sm-8">
+            <p class="card-text">{{myname}}</p>
+            <p class="card-text">{{mylastName}}</p>
+            <p class="card-text">{{myemail}}</p>
+            <p class="card-text">{{mypwd}}</p>
+          </div>
+
+          <div class="col-sm-4">
+            <img src="http://localhost:3002/uploads/{{myurl || 'profil.jpg'}}" class="img-fluid img-thumbnail" (click)='filebrowser.click()'>
+          </div>
+        </div>
+        <a routerLink="/admin/home" class="btn btn-primary">back to Home</a>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Photo</th>
+              <th>
+
+              </th>
+              <th>Action</th>
+              
+            </tr>
+          </thead>
+          <tbody *ngFor="let art of articles | paginate: { itemsPerPage: 3, currentPage: p }; ">
+            <tr>
+              
+              <td>{{art.name}}</td>
+        <td [innerHtml]="art.description"></td>
+        <td>
+        <img src="http://localhost:3002/uploads/{{art.url || 'profil.jpg'}}" class="rounded float-center" alt="..." width="30%"
+        (click)='filebrowser.click()'>
+        
+        <input #filebrowser hidden type="file" name="photo" (change)="handlefileArtChange($event.target.files,art._id)" />
+        </td>
+
+        <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="Edit Task" class="btn btn-outline-info" (click)="getArticle(art._id)" data-toggle="modal"
+              data-target="#UpdateArtModal">
+             <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+
+          </td>
+          <td class="td-actions text-right">
+            <button type="button" rel="tooltip" title="Remove" class="btn btn-outline-danger" (click)="getArticleCurrent(art._id)" data-toggle="modal"
+              data-target="#deleteArtModal">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+          </td>
+        
+            </tr>
+           
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  
+      </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update My Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form class="form-horizontal" [formGroup]="updateProfileForm" (ngSubmit)="updateMyProfileBtn(updateProfileForm)" role="form">
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" class="form-control" formControlName="name">
+
+          </div>
+
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" class="form-control" formControlName="lastname">
+
+          </div>
+
+
+
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" formControlName="email" class="form-control">
+            <span *ngIf="this.updateProfileForm.controls['email'].invalid"> wrong email </span>
+          </div>
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-lock"></i>
+            </span>
+            <input type="password" formControlName="password" class="form-control">
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" [disabled]="updateProfileForm.invalid" class="btn btn-primary">save changes</button>
+          </div>
+        </form>
+
+
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="UpdateArtModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Article</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <form class="form-horizontal" [formGroup]="updateArticleForm" (ngSubmit)="updateArticleBtn(updateArticleForm)" role="form">
+  
+  
+            <div style="margin-bottom: 25px" class="input-group">
+              <span class="input-group-addon">
+                <i class="glyphicon glyphicon-user"></i>
+              </span>
+              <input formControlName="name" type="text" class="form-control" value="" placeholder="Name">
+  
+            </div>
+  
+  
+            <editor apiKey="test" formControlName="description"></editor>
+            <br>
+            <div class="input-group">
+  
+              <select class="form-control" (click)="changeSelect($event.target.value)" formControlName="category">
+                <option value={{cat._id}} *ngFor="let cat of cats; let i = index">{{cat.type}} </option>
+  
+              </select>
+              <button type="reset" class="btn btn-outline-dark" (click)="showFormCat = !showFormCat">+</button>
+            </div>
+            <div *ngIf="showFormCat">
+              <form [formGroup]="createCategoryForm" (ngSubmit)="AddCategory(createCategoryForm)" class="form-horizontal" role="form">
+  
+                <div class="form-group">
+                  <label>Category's Type</label>
+                  <div class="input-group">
+                    <input type="text" formControlName="type" class="form-control" value="" placeholder="Category's Type">
+                  </div>
+                </div>
+                <button type="Submit" class="btn btn-outline-dark">Save</button>
+              </form>
+            </div>
+  
+  
+  
+  
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" [disabled]="updateArticleForm.invalid" class="btn btn-primary">save changes</button>
+            </div>
+          </form>
+  
+  
+  
+  
+  
+        </div>
+  
+  
+  
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="modal fade" id="deleteArtModal" tabindex="-2" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Article</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <p>Are you sure ?</p>
+  
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="delete()">Delete</button>
+          </div>
+  
+  
+  
+  
+  
+  
+        </div>
+  
+  
+  
+      </div>
+    </div>
+  </div>

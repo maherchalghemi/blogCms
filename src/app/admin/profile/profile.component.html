@@ -1,0 +1,94 @@
+
+<div class="col-md-12 " style="margin-left: 130%">
+  <div class="card card-profile">
+    <div class="card-avatar">
+
+
+      <img src="http://localhost:3002/uploads/{{myurl || 'profil.jpg'}}" class="img" (click)='filebrowser.click()'>
+      <!-- <div *ngIf="showUploadImg"> -->
+      <input #filebrowser hidden type="file" name="photo" (change)="handlefileChange($event.target.files)" />
+
+    </div>
+    <div class="card-body">
+      <h6 class="card-title">My Profile</h6>
+      <h4 class="card-category">{{myname}}</h4>
+      <h4 class="card-category">{{mylastName}}</h4>
+      <h4 class="card-category">{{myemail}}</h4>
+      <h4 class="card-title">{{mypwd}}</h4>
+
+      <a routerLink="/admin/home" class="btn btn-primary">back to Home</a>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+        Update
+      </button>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update My Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form class="form-horizontal" [formGroup]="updateProfileForm" (ngSubmit)="updateMyProfileBtn(updateProfileForm)" role="form">
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" class="form-control" formControlName="name">
+
+          </div>
+
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" class="form-control" formControlName="lastname">
+
+          </div>
+
+
+
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <input type="text" formControlName="email" class="form-control">
+            <span *ngIf="this.updateProfileForm.controls['email'].invalid"> wrong email </span>
+          </div>
+
+          <div style="margin-bottom: 25px" class="input-group">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-lock"></i>
+            </span>
+            <input type="password" formControlName="password" class="form-control">
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" [disabled]="updateProfileForm.invalid" class="btn btn-primary" (click)="closeModal()">save changes</button>
+          </div>
+        </form>
+
+
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

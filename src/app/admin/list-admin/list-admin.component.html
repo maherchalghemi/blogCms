@@ -1,0 +1,189 @@
+<!-- list admin -->
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title ">Administrator</h4>
+      <p class="card-category"> List Of Administrators</p>
+    </div>
+    <div class="card-body">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-secondary" (click)="getUsers()">All</button>
+            <button type="button" class="btn btn-secondary" (click)="getOnlyAdmin()">Admin</button>
+            <button type="button" class="btn btn-secondary" (click)="getOnlyUser()">User</button>
+            </div>
+            <div class="input-group no-border">
+              <button type="submit" class="btn btn-default btn-round btn-just-icon" (click)="showsearch = !showsearch">
+                <i class="material-icons">search</i>
+                <div class="ripple-container"></div>
+              </button>
+              <div *ngIf="showsearch">
+                <input type="text" value="" [(ngModel)]="searchTable" class="form-control" placeholder="Search...">
+              </div>
+    
+            </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead class=" text-primary">
+        <th>Name</th>
+<th>Last Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Photo</th>
+<th>Action</th>
+<th></th>
+<th></th>
+
+          </thead>
+     <tbody *ngFor="let user of users | searchPipe :searchTable  | paginate: { itemsPerPage: 3, currentPage: p }; let i = index">
+            <tr>
+             <td>{{user.name}}</td>
+<td>{{user.lastname}} </td>
+<td>{{user.email}}</td>
+<td>{{user.role}}  {{user._id}} </td>
+<td>{{user.url}}</td>
+<td>
+
+<img src="http://localhost:3002/uploads/{{user.url || 'profil.jpg'}}" class="rounded float-center" alt="..." width="30%"
+(click)='filebrowser.click()'>
+<!-- <div *ngIf="showUploadImg"> -->
+<input #filebrowser hidden type="file" name="photo" (change)="handlefileChange($event.target.files,user._id)" />
+
+<!-- <button type="button" class="btn btn-success btn-s" > -->
+<!-- Upload an Image -->
+<!-- </button> -->
+<!-- </div> -->
+</td>
+<td class="td-actions text-right">
+<button type="button" rel="tooltip" title="Edit Task" class="btn btn-outline-info " (click)="getAdmin(user._id)" data-toggle="modal" data-target="#exampleModal">
+    <i class="material-icons">edit</i>
+</button>
+
+
+</td>
+<td class="td-actions text-right"> 
+<button type="button" rel="tooltip" title="Remove" class="btn btn-outline-danger" (click)="getAdminCurrent(user._id)" data-toggle="modal" data-target="#deleteModal">
+    <i class="material-icons">close</i>
+</button>
+</td>
+
+            </tr>
+          </tbody>
+         
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<button type="button" class="btn btn-outline-success" (click)="goToAdd()">
+Create New
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Update Admin</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+
+<form class="form-horizontal" [formGroup]="updateAdminForm" (ngSubmit)="updateAdminBtn(updateAdminForm)" role="form">
+
+<div style="margin-bottom: 25px" class="input-group">
+<span class="input-group-addon">
+<i class="glyphicon glyphicon-user"></i>
+</span>
+<input type="text" class="form-control" formControlName="name">
+
+</div>
+
+
+<div style="margin-bottom: 25px" class="input-group">
+<span class="input-group-addon">
+<i class="glyphicon glyphicon-user"></i>
+</span>
+<input type="text" class="form-control" formControlName="lastname">
+
+</div>
+
+
+
+
+<div style="margin-bottom: 25px" class="input-group">
+<span class="input-group-addon">
+<i class="glyphicon glyphicon-user"></i>
+</span>
+<input type="text" formControlName="email" class="form-control">
+<span *ngIf="this.updateAdminForm.controls['email'].invalid"> wrong email </span>
+</div>
+
+<div style="margin-bottom: 25px" class="input-group">
+<span class="input-group-addon">
+<i class="glyphicon glyphicon-lock"></i>
+</span>
+<input type="password" formControlName="password" class="form-control">
+</div>
+
+
+<div class="modal-footer">
+<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="submit" [disabled]="updateAdminForm.invalid" class="btn btn-primary">save changes</button>
+</div>
+</form>
+
+
+
+
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-2" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="deleteModalLabel">Delete Admin</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+
+<p>Are you sure ?</p>
+
+<div class="modal-footer">
+<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="submit"  class="btn btn-primary" data-dismiss="modal" (click)="delete()">Delete</button>
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+
